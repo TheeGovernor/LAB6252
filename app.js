@@ -14,7 +14,16 @@ var authorizationCode = '<insert authorization code>';
 // for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
 
-       /*
+    
+// create a new express server
+var app = express();
+
+// serve the files out of ./public as our main files
+app.use(express.static(__dirname + '/public'));
+
+// get the app environment from Cloud Foundry
+var appEnv = cfenv.getAppEnv();
+   /*
 var spotifyApi = new SpotifyWebApi({
   clientId : 'e08932f0814b4d36a1cc22cab827e217',
   clientSecret : 'f219e8adec224ced9e61d014634709bb',
@@ -42,14 +51,6 @@ spotifyApi.authorizationCodeGrant(authorizationCode)
     console.log('Something went wrong!', err.message);
   });
   */
-// create a new express server
-var app = express();
-
-// serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
-
-// get the app environment from Cloud Foundry
-var appEnv = cfenv.getAppEnv();
 /*
 app.get('/hi',function(req,res) {
 	
