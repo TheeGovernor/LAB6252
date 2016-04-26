@@ -7,8 +7,8 @@
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
 var express = require('express');
-var SpotifyWebApi = require("../");
-var authorizationCode = '<insert authorization code>';
+//var SpotifyWebApi = require("../");
+//var authorizationCode = '<insert authorization code>';
 
 // cfenv provides access to your Cloud Foundry environment
 // for more info, see: https://www.npmjs.com/package/cfenv
@@ -23,13 +23,13 @@ app.use(express.static(__dirname + '/public'));
 
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
-   /*
-var spotifyApi = new SpotifyWebApi({
-  clientId : 'e08932f0814b4d36a1cc22cab827e217',
-  clientSecret : 'f219e8adec224ced9e61d014634709bb',
-  redirectUri : '<insert redirect URI>'
-});
-*/
+   
+
+  var clientId ='e08932f0814b4d36a1cc22cab827e217';
+  var clientSecret ='f219e8adec224ced9e61d014634709bb';
+  var redirectUri ='<insert redirect URI>';
+
+
 /*
 spotifyApi.authorizationCodeGrant(authorizationCode)
   .then(function(data) {
@@ -51,36 +51,39 @@ spotifyApi.authorizationCodeGrant(authorizationCode)
     console.log('Something went wrong!', err.message);
   });
   */
-/*
-app.get('/hi',function(req,res) {
-	
-spotifyApi.searchTracks('Love', function(err, data) {
-  if (err) {
-    console.error('Something went wrong', err.message);
-    return;
-  }
 
-  // Print some information about the results
-  console.log('I got ' + data.body.tracks.total + ' results!');
-
-  // Go through the first page of results
-  var firstPage = data.body.tracks.items;
-  console.log('The tracks in the first page are.. (popularity in parentheses)');
-
- 
-  firstPage.forEach(function(track, index) {
-    console.log(index + ': ' + track.name + ' (' + track.popularity + ')');
-  });
-});
-	
+app.post('/hi',function(req,res) {
+	console.log(req.params);
     res.send("Hello Worldddd!");
 });
 
 
-*/
+var http = require('http');
+
+//The url we want is: 'www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+var options = {
+  host: 'www.random.org',
+  path: '/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+};
+
+var callback = function(response) {
+  var str = '';
+
+  //another chunk of data has been recieved, so append it to `str`
+  response.on('data', function (chunk) {
+    str += chunk;
+  });
+
+  //the whole response has been recieved, so we just print it out here
+  response.on('end', function () {
+    console.log(str);
+  });
+};
+
+http.request(options, callback).end();
 
 // start server on the specified port and binding host
-app.listen(appEnv.port, '0.0.0.0', function() {
+app.listen(appEnv.port|5000, '0.0.0.0', function() {
 
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
